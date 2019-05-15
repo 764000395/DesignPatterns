@@ -9,7 +9,9 @@
 namespace Dd;
 
 
-interface IDatabases
-{
-
+interface IDatabases{
+    function connect($host, $username, $password, $db_name);
+    function query($sql);
+    function all_result($result);
+    function close();
 }
