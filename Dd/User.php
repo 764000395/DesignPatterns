@@ -9,6 +9,8 @@
 namespace Dd;
 
 
+use Dd\Database\MySQLi;
+
 class User
 {
     public $id;
@@ -16,10 +18,23 @@ class User
     public $mobile;
     public $regtime;
 
+    protected $db;
     public function __construct($id)
     {
         $this->id = $id;
-        $con = new Mysqli();
+        $this->db = new MySQLi();
+        $this->db->connect('localhost', 'design', 'design123', 'design');
+        $sql = "select * from user where id = {$id}";
+        $result = $this->db->query($sql);
+        $data = $this->db->all_result($result);
+        if(!empty($data)){
+            $data = $data[0];
+            $this->id = $data['id'];
+            $this->name = $data['name'];
+            $this->mobile = $data['mobile'];
+            $this->regtime = $data['regtime'];
+        }
+
     }
 
     /**
@@ -28,7 +43,8 @@ class User
     public function __destruct()
     {
         // TODO: Implement __destruct() method.
-
+        $sql = "update user set `name` = '{$this->name}', `mobile` = '{$this->mobile}', `regtime` = '{$this->regtime}' where id = {$this->id}";
+        $this->db->query($sql);
     }
 
 }
