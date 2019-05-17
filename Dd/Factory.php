@@ -8,7 +8,6 @@
 
 namespace Dd;
 
-
 class Factory
 {
     static function createDatabase(){
@@ -18,5 +17,16 @@ class Factory
         Register::set('db_factory', $db);
 
         return $db;
+    }
+
+    static function getUser($id){
+        $key = 'user_' . $id;
+        $user = Register::get($key);
+        if(!$user){
+            $user = new User($id);
+            Register::set($key, $user);
+        }
+
+        return $user;
     }
 }
