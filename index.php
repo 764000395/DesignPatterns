@@ -26,7 +26,94 @@ $single_result = $single_con->query($sql);
 while($row = $single_result->fetch_assoc()){
     var_dump($row);
 }
-exit;
+
+echo "注册树模式", PHP_EOL;
+$register_con = \Dd\Register::get('db_factory');
+$register_result = $register_con->query($sql);
+while($row = $register_result->fetch_assoc()){
+    var_dump($row);
+}
+
+echo "适配器模式", PHP_EOL;
+$adapter_con = new Dd\Database\MySQLi();
+$adapter_con->connect('localhost', 'design', 'design123', 'design');
+$result = $adapter_con->query($sql);
+var_dump($adapter_con->all_result($result));
+$adapter_con->close();
+
+echo "数据对象映射模式",PHP_EOL;
+//$user = new \Dd\User(1);
+//echo "id: $user->id \t name:$user->name \t mobile:$user->mobile \t regtime:$user->regtime",PHP_EOL;
+//接下来改变$user 各属性的值；
+//$user->name = '牛二'; $user->mobile = '15515793293'; $user->regtime = date('Y-m-d H:i:s', time());
+class page{
+    protected $user;
+    public function index(){
+        $this->user = \Dd\Factory::getUser(1);
+        echo "id: {$this->user->id} \t name:{$this->user->name} \t mobile:{$this->user->mobile} \t regtime:{$this->user->regtime}",PHP_EOL;
+
+        $this->test();
+        echo 'OK';
+    }
+
+    public function test(){
+        $this->user = \Dd\Factory::getUser(1);
+        $this->user->name = '牛二';
+    }
+}
+$page = new page();
+$page->index();
+
+echo PHP_EOL,"观察者模式",PHP_EOL;
+
+class Event extends \Dd\EventGenerator {
+    public function trigger(){
+        echo "事件触发",PHP_EOL;
+
+        // 通知观察者更新
+        $this->notify();
+    }
+}
+
+class Observer1 implements \Dd\Observe{
+    public function update($event_info = null)
+    {
+        // TODO: Implement update() method.
+        echo '观察者：', get_class(), '的更新', PHP_EOL;
+    }
+}
+
+class Observer2 implements \Dd\Observe{
+    public function update($event_info = null)
+    {
+        // TODO: Implement update() method.
+        echo '观察者：', get_class(), '的更新', PHP_EOL;
+    }
+}
+$event = new Event();
+$event->addObserver(new Observer1());
+$event->addObserver(new Observer2());
+$event->trigger();
+
+echo '原型模式', PHP_EOL;
+$prototype = new \Dd\Canvas();
+$prototype->init();
+//---
+$canvas1 = clone $prototype;
+$canvas1->draw('正方形');
+//---
+$canvas2  = clone $prototype;
+$canvas2->draw('三角形');
+
+echo "\n装饰器模式\n";
+$canvas1->addDecorator(new \Dd\ColorDecorator('red'));
+$canvas1->addDecorator(new \Dd\SizeDecorator('25px'));
+$canvas1->beforeDecorator();
+
+$canvas1->draw('装饰器模式下画的图形');
+
+$canvas1->afterDecorator();
+
 /*
 Dd\MyObject::test();
 App\Controller\Home\Index::test();
