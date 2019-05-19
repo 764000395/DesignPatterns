@@ -29,4 +29,11 @@ class Factory
 
         return $user;
     }
+
+    static function getDatabases($id){
+        $key = 'databases_' . $id;
+        if($id == 'slave'){
+
+        }
+    }
 }
