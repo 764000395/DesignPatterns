@@ -11,6 +11,6 @@ class Index
 {
     public static function test()
     {
-        echo '这是 App\Controller\Home 下的 index.php 文件中的 Index 类下的 test 方法',PHP_EOL;
+        echo '这是 App\Controller\Home 下的 index.bak.php 文件中的 Index 类下的 test 方法',PHP_EOL;
     }
 }
