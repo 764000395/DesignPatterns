@@ -11,5 +11,6 @@ $config = array(
             'Dd\Decorator\Template',
         )
     ),
+    'controller' => array(),
 );
 return $config;
