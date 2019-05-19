@@ -11,5 +11,6 @@ namespace Dd;
 
 interface IUserProxy
 {
-
+    function getUserById($id);
+    function setUserName($id, $name);
 }
